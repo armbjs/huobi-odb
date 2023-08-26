@@ -29,7 +29,7 @@ def get_huobi_symbols(key):
     # huobi_spot_symbols_list = []
     # for i in huobi_spot_symbol_data:
     #     currency = [i['base-currency'], i['quote-currency']]
-    #     huobi_spot_symbols_list.append(currency)
+    #     huobi_spot_symbols_list.append(currency) #
     value = my_redis.hget('TEST:GET_CURRENCY_LIST:HUOBI', f'{key}')
     value_str = value.decode('utf-8')
     value_list = json.loads(value_str)
