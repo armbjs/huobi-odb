@@ -25,7 +25,7 @@ jobs:
 
       - name: Build huobi-odb Docker Image
         working-directory: ./docker
-        run: docker build . --no-cache --file Dockerfile --tag docker.armbjs.com:5000/huobi-odb:0.2.1 --tag docker.armbjs.com:5000/huobi-odb:latest --build-arg "PPI_USERNAME=${{ secrets.PPI_USERNAME }}" --build-arg "PPI_PASSWORD=${{ secrets.PPI_PASSWORD }}"
+        run: docker build . --no-cache --file Dockerfile --tag docker.armbjs.com:5000/huobi-odb:0.2.2 --tag docker.armbjs.com:5000/huobi-odb:latest --build-arg "PPI_USERNAME=${{ secrets.PPI_USERNAME }}" --build-arg "PPI_PASSWORD=${{ secrets.PPI_PASSWORD }}"
 
       - name: Push huobi-odb Docker Image
         working-directory: ./docker

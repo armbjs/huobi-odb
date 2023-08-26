@@ -86,7 +86,7 @@ def process_huobi_orderbook(currency_pair):
 
 if __name__ == "__main__" :
 
-    huobi_key = 1
+    huobi_key = os.getenv("key", "default_value")
 
     redis_username = 'armbjs'
     redis_password = "xkqfhf12"
