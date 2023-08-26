@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "huobi-odb"
+version = "0.2.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+redis = "^5.0.0"
+pytz = "^2023.3"
+requests = "^2.31.0"
+
+[[tool.poetry.source]]
+name = "pdr"
+url = "http://docker.armbjs.com:8080"
+priority = "primary"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[tool.poetry.scripts]
+publish = "scripts.publish:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
