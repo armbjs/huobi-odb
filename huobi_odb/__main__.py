@@ -29,7 +29,7 @@ def get_huobi_symbols(key):
     # huobi_spot_symbols_list = []
     # for i in huobi_spot_symbol_data:
     #     currency = [i['base-currency'], i['quote-currency']]
-    #     huobi_spot_symbols_list.append(currency) #\
+    #     huobi_spot_symbols_list.append(currency) #
     value = my_redis.hget('TEST:GET_CURRENCY_LIST:HUOBI', f'HUOBI-{key}')
     value_str = value.decode('utf-8')
     value_list = json.loads(value_str)
@@ -86,7 +86,7 @@ def process_huobi_orderbook(currency_pair):
 
 if __name__ == "__main__" :
 
-    huobi_key = os.getenv("key", "default_value")
+    huobi_key = 1
 
     redis_username = 'armbjs'
     redis_password = "xkqfhf12"
