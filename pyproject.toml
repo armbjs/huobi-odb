@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "huobi-odb"
-version = "0.2.5"
+version = "0.2.6"
 description = ""
 authors = [
     "armbjs <armbjs@naver.com>",
