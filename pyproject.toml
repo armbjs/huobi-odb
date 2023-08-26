@@ -1,11 +1,14 @@
 [tool.poetry]
 name = "huobi-odb"
-version = "0.2.3"
+version = "0.2.5"
 description = ""
 authors = [
     "armbjs <armbjs@naver.com>",
 ]
 readme = "README.md"
+packages = [
+    { include = "huobi-odb" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
