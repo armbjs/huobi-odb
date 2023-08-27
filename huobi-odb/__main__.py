@@ -64,13 +64,17 @@ def process_huobi_orderbook(currency_pair):
         for i in huobi_orderbook_url_bid:
             huobi_orderbook_url_bid_dict[str(i[0])] = {"price": str(i[0]), "quantity": i[1], "bid_or_ask": "bid"}
 
-        my_redis.set(f"TEST:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_ASK", json.dumps(huobi_orderbook_url_ask_dict))
-        my_redis.set(f"TEST:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_BID", json.dumps(huobi_orderbook_url_bid_dict))
-        my_redis.set(f"TEST:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_LOCAL_TIMESTAMP_IN_MS", huobi_orderbook_url_local_ts)
-        my_redis.set(f"TEST:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_LOCAL_UPDATED_AT", huobi_orderbook_url_local_at)
-        my_redis.set(f"TEST:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_TIMESTAMP_IN_MS", huobi_orderbook_url_ts)
-        my_redis.set(f"TEST:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_UPDATED_AT", huobi_orderbook_url_ts_at)
+        key_value = {
+            f"RAW:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_ASK" : json.dumps(huobi_orderbook_url_ask_dict),
+            f"RAW:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_BID" : json.dumps(huobi_orderbook_url_bid_dict),
+            f"RAW:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_LOCAL_TIMESTAMP_IN_MS" : huobi_orderbook_url_local_ts,
+            f"RAW:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_LOCAL_UPDATED_AT" : huobi_orderbook_url_local_at,
+            f"RAW:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_TIMESTAMP_IN_MS": huobi_orderbook_url_ts,
+            f"RAW:ORDERBOOK:HUOBI_SPOT:{order_currency.upper()}_{payment_currency.upper()}_UPDATED_AT" : huobi_orderbook_url_ts_at
+        }
 
+        my_redis.mset(key_value)
+        
         count_time_finish = time.time()
         count_time_elapsed = count_time_finish - count_time
         count_doing_time = count_time_elapsed / count
