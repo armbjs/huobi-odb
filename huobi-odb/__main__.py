@@ -8,8 +8,16 @@ import requests
 import warnings
 import concurrent.futures
 import os
+import telegram
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+error_message_count = 0
+
+async def tel_send(send):
+    bot = telegram.Bot(token="6054828803:AAEYFM_8dlIwwZjJtIBYBkw3B-lgPJ0nCCg")
+    chat_id = "6070338761"
+    await bot.send_message(chat_id=chat_id, text=f"{send}")
 
 def format_timestamp_in_ms(timestamp_in_ms):
     local_timezone = pytz.timezone("Asia/Seoul")
@@ -29,8 +37,8 @@ def get_huobi_symbols(key):
     # huobi_spot_symbols_list = []
     # for i in huobi_spot_symbol_data:
     #     currency = [i['base-currency'], i['quote-currency']]
-    #     huobi_spot_symbols_list.append(currency) #
-    value = my_redis.hget('TEST:GET_CURRENCY_LIST:HUOBI', f'HUOBI-{key}')
+    #     huobi_spot_symbols_list.append(currency)
+    value = my_redis.hget('DATA:GET_CURRENCY_LIST:HUOBI', f'HUOBI-{key}')
     value_str = value.decode('utf-8')
     value_list = json.loads(value_str)
     return value_list
@@ -74,7 +82,7 @@ def process_huobi_orderbook(currency_pair):
         }
 
         my_redis.mset(key_value)
-        
+
         count_time_finish = time.time()
         count_time_elapsed = count_time_finish - count_time
         count_doing_time = count_time_elapsed / count
@@ -86,10 +94,11 @@ def process_huobi_orderbook(currency_pair):
         else:
             print(f"에러 코드: {type(e).__name__}, 메시지: {str(e)}")
             time.sleep(62)
-
+            
 
 if __name__ == "__main__" :
 
+    # huobi_key = 1
     huobi_key = os.getenv("KEY", "default_value")
 
     redis_username = 'armbjs'
@@ -133,6 +142,9 @@ if __name__ == "__main__" :
     count_all = -1
 
     while True:
+
+        import asyncio
+
         try:
 
             with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
@@ -141,4 +153,15 @@ if __name__ == "__main__" :
             count_all += 1
 
         except Exception as e:
-            print(f"에러 코드: {type(e).__name__}, 메시지: {str(e)}")
+                error_code = f"에러 코드: {type(e).__name__}, 메시지: {str(e)}"
+                error_message_send = f"HUOBI-orderbook-{huobi_key}번 파드에서 보고드립니다. 에러가 발생하였습니다. ({error_code})"
+
+                if error_message_count > 60:
+                    error_message_count -= 1
+                    pass
+
+                elif error_message_count == 0:
+                    error_message_count += 60
+                    asyncio.run(tel_send(error_message_send))
+
+                print(error_code)
